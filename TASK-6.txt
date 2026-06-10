@@ -1,0 +1,77 @@
+TASK-6 (Improve the Model with Feature Scaling and Evaluation)
+
+PYTHON CODE:
+
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Load Iris dataset
+iris = load_iris()
+
+# Features and target
+X = iris.data
+y = iris.target
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+X, y,
+test_size=0.2,
+random_state=10
+)
+
+# Scale features
+scaler = MinMaxScaler()
+
+X_train_norm = scaler.fit_transform(X_train)
+X_test_norm = scaler.transform(X_test)
+
+# Create and train KNN model
+model = KNeighborsClassifier(n_neighbors=5)
+
+model.fit(X_train_norm, y_train)
+
+# Predictions
+predictions = model.predict(X_test_norm)
+
+# Accuracy
+accuracy = accuracy_score(y_test, predictions)
+
+print("KNN WITH FEATURE SCALING")
+print("-" * 30)
+print(f"Accuracy: {accuracy * 100:.2f}%")
+
+print("\nClassification Report:")
+print(classification_report(
+y_test,
+predictions,
+target_names=iris.target_names
+))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, predictions))
+
+OUTPUT:
+KNN WITH FEATURE SCALING
+------------------------------
+Accuracy: 96.67%
+
+Classification Report:
+precision recall f1-score support
+
+setosa 1.00 1.00 1.00 10
+versicolor 1.00 0.92 0.96 13
+virginica 0.88 1.00 0.93 7
+
+accuracy 0.97 30
+macro avg 0.96 0.97 0.96 30
+weighted avg 0.97 0.97 0.97 30
+
+Confusion Matrix:
+[[10 0 0]
+[ 0 12 1]
+[ 0 0 7]]
+
